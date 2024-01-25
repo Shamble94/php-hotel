@@ -5,49 +5,57 @@
         [
             'name' => 'Hotel Belvedere',
             'description' => 'Hotel Belvedere Descrizione',
-            'parking' => true,
+            'parking' => "Si",
             'vote' => 4,
             'distance_to_center' => 10.4
         ],
         [
             'name' => 'Hotel Futuro',
             'description' => 'Hotel Futuro Descrizione',
-            'parking' => true,
+            'parking' => "Si",
             'vote' => 2,
             'distance_to_center' => 2
         ],
         [
             'name' => 'Hotel Rivamare',
             'description' => 'Hotel Rivamare Descrizione',
-            'parking' => false,
+            'parking' => "No",
             'vote' => 1,
             'distance_to_center' => 1
         ],
         [
             'name' => 'Hotel Bellavista',
             'description' => 'Hotel Bellavista Descrizione',
-            'parking' => false,
+            'parking' => "No",
             'vote' => 5,
             'distance_to_center' => 5.5
         ],
         [
             'name' => 'Hotel Milano',
             'description' => 'Hotel Milano Descrizione',
-            'parking' => true,
+            'parking' => "Si",
             'vote' => 2,
             'distance_to_center' => 50
         ],
 
     ];
-   foreach ($hotels as $hotel){
-      if($hotel["parking"]){
-        $hotel["parking"] = "si";
+
+    $filtered_hotels = $hotels;
+    if(isset($_GET["parcheggio"])){
+        $temp_hotels = [];
+        $parcheggio = $_GET["parcheggio"]; 
         
-      }else{
-        $hotel["parking"]  = "no";
+
+        foreach($filtered_hotels as $hotel){
+            if($hotel["parking"] == $parcheggio) {
+                $temp_hotels[] =  $hotel;
+          
             
-      }
-   }
+            };
+        } 
+        $filtered_hotels = $temp_hotels;
+
+    }
 
 ?>
 
@@ -60,8 +68,21 @@
     <title>Document</title>
 </head>
 <body>
+<?php include __DIR__."/header.php"; ?>
     <div class="container">
         <div class="row">
+            <div class="col-6">
+
+                <form action="./index.php" method="GET">
+                     <select name="parcheggio" id="parcheggio">
+                        <option value="">Filtra per presenza parcheggio</option>
+                        <option value="Si">Si</option>
+                        <option value="No">No</option>
+                    </select>
+                    <!--  <input type="text" class="form-control form-control-sm mt-2" placeholder="filtra per presenza parcheggio" name="parcheggio">  -->
+                    <button type="submit" class="btn btn-primary"> Cerca </button>
+                </form>
+            </div>
             <div class="col-12">
                 <table class="table table-striped">
                     <thead>
@@ -74,7 +95,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($hotels as $hotel) { ?>
+                        <?php foreach($filtered_hotels as $hotel) { ?>
                             <tr>
                                 <td> 
                                     <?php echo $hotel["name"];  ?>
@@ -98,5 +119,6 @@
             </div>
         </div>
     </div>
-</body>
+    <?php include __DIR__."/footer.php"; ?>
+    </body>
 </html>
