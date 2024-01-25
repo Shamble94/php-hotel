@@ -57,6 +57,23 @@
 
     }
 
+    if(isset($_GET["voto"])  && isset($_GET["voto"]) != "" ){
+        $temp_hotels = [];
+        $voto = $_GET["voto"]; 
+        
+
+        foreach($filtered_hotels as $hotel){
+            if($hotel["vote"] == $voto) {
+                $temp_hotels[] =  $hotel;
+          
+            
+            };
+        } 
+        $filtered_hotels = $temp_hotels;
+
+    }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -70,8 +87,8 @@
 <body>
 <?php include __DIR__."/header.php"; ?>
     <div class="container">
-        <div class="row">
-            <div class="col-6">
+        <div class="row mt-2">
+            <div class="col-12">
 
                 <form action="./index.php" method="GET">
                      <select name="parcheggio" id="parcheggio">
@@ -79,10 +96,15 @@
                         <option value="Si">Si</option>
                         <option value="No">No</option>
                     </select>
-                    <!--  <input type="text" class="form-control form-control-sm mt-2" placeholder="filtra per presenza parcheggio" name="parcheggio">  -->
-                    <button type="submit" class="btn btn-primary"> Cerca </button>
+                    
+                    <input type="text" class="form-control form-control-sm mt-2" placeholder="filtra per voto" name="voto" value="<?php echo $_GET["voto"] ?? "" ?>"> 
+                    
+                          <button type="submit"class="btn btn-primary"> Cerca </button>
+                   
+                    
                 </form>
             </div>
+            
             <div class="col-12">
                 <table class="table table-striped">
                     <thead>
